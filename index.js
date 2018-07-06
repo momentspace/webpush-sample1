@@ -42,12 +42,12 @@ window.addEventListener('load', async () => {
 })
 
 function askPermission() {
-  var permission = await Notification.requestPermission()
+  var permission = Notification.requestPermission()
   new Notification('WebPushの設定をしました')
   if (permission === 'denied') {
     return alert('ブラウザの通知設定をONにしてください')
   } else {
-    sub = await initSubscribe()
+    console.log('permission ok')
   }
 }
 

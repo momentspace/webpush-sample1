@@ -1,5 +1,5 @@
-const KEY_API = 'http://localhost:8080/key/'
-const SUB_API = 'http://localhost:8080/sub/'
+const KEY_API = 'http://momentspace.live-on.net:8080/key/'
+const SUB_API = 'http://momentspace.live-on.net:8080/sub/'
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
@@ -44,7 +44,7 @@ async function putSubscription(subscription) {
   console.log(res)
 }
 
-window.addEventListener('load', async () => {
+const onload = async () => {
   navigator.serviceWorker.register('./serviceworker.js')
   var sub = await getSubscription()
   console.log(sub)
@@ -59,7 +59,9 @@ window.addEventListener('load', async () => {
     sub = await subscribe(option)
   }
   await putSubscription(sub)
-})
+}
+window.removeEventListener('load', onload)
+window.addEventListener('load', onload, true)
 
 function askPermission() {
   const f = async () => {

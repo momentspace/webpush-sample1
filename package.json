@@ -2,7 +2,13 @@
   "name": "webpush-sample1",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "dev": "node node.js"
+  },
   "repository": "git@github.com:momentspace/webpush-sample1.git",
   "author": "momentspace <momentspace@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }

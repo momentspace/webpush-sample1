@@ -1,4 +1,4 @@
-const PUSH_API = "http://momentspace.live-on.net:8080/push/"
+const PUSH_API = "https://momentspace.live-on.net:8080/push/"
 
 const preload= () => {
   document.getElementById("btn").addEventListener('click', () => {

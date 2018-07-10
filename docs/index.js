@@ -1,5 +1,5 @@
-const KEY_API = 'http://momentspace.live-on.net:8080/key/'
-const SUB_API = 'http://momentspace.live-on.net:8080/sub/'
+const KEY_API = 'https://momentspace.live-on.net:8080/key/'
+const SUB_API = 'https://momentspace.live-on.net:8080/sub/'
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)

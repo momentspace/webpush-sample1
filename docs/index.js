@@ -1,3 +1,6 @@
+const KEY_API = 'http://localhost:8080/key/'
+const SUB_API = 'http://localhost:8080/sub/'
+
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
   const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
@@ -17,12 +20,12 @@ async function getSubscription() {
 }
 
 async function getPublicKey() {
-  var res = await fetch('/keys', {
+  var res = await fetch(KEY_API, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' }
                   }).then((res) => res.json())
   console.log(res)
-  return res.publicKey
+  return urlBase64ToUint8Array(res.publicKey)
 }
 
 async function subscribe(option) {
@@ -31,24 +34,47 @@ async function subscribe(option) {
   return sub
 }
 
+async function putSubscription(subscription) {
+  console.log(JSON.stringify(subscription))
+  var res = await fetch(SUB_API, {
+                    method: 'POST',
+                    body: JSON.stringify(subscription),
+                    headers: { 'Content-Type': 'application/json' }
+                  }).then((res) => res.json())
+  console.log(res)
+}
 
 window.addEventListener('load', async () => {
   navigator.serviceWorker.register('./serviceworker.js')
   var sub = await getSubscription()
+  console.log(sub)
   if (!sub) {
     askPermission()
+    const key = await getPublicKey()
+    console.log(key)
+    const option = {
+      userVisibleOnly: true,
+      applicationServerKey: key
+    }
+    sub = await subscribe(option)
   }
-  console.log(sub)
+  await putSubscription(sub)
 })
 
 function askPermission() {
-  var permission = Notification.requestPermission()
-  new Notification('WebPushの設定をしました')
-  if (permission === 'denied') {
-    return alert('ブラウザの通知設定をONにしてください')
-  } else {
-    console.log('permission ok')
+  const f = async () => {
+    const permission = await Notification.requestPermission()
+
+    console.log(permission)
+    if (permission === 'denied') {
+      alert('ブラウザの通知設定をONにしてください')
+    } else {
+      new Notification('WebPushの設定をしました')
+      console.log('permission ok')
+    }
   }
+
+  f()
 }
 
 
